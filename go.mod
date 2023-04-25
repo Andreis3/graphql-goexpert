@@ -1,4 +1,4 @@
-module graphql-goexpert
+module github.com/Andreis3/graphql-goexpert
 
 go 1.20
 
