@@ -7,17 +7,36 @@ package graph
 import (
 	"context"
 	"fmt"
-	"graphql-goexpert/graph/model"
+
+	model1 "github.com/andreis3/graphql-goexpert/graph/model"
 )
 
-// CreateTodo is the resolver for the createTodo field.
-func (r *mutationResolver) CreateTodo(ctx context.Context, input model.NewTodo) (*model.Todo, error) {
-	panic(fmt.Errorf("not implemented: CreateTodo - createTodo"))
+// CreateCategory is the resolver for the createCategory field.
+func (r *mutationResolver) CreateCategory(ctx context.Context, input model1.NewCategoryInput) (*model1.Category, error) {
+	category, err := r.CategoryService.Create(input.Name, *input.Description)
+	if err != nil {
+		return nil, err
+	}
+	return &model1.Category{
+		ID:          category.ID,
+		Name:        category.Name,
+		Description: &category.Description,
+	}, nil
 }
 
-// Todos is the resolver for the todos field.
-func (r *queryResolver) Todos(ctx context.Context) ([]*model.Todo, error) {
-	panic(fmt.Errorf("not implemented: Todos - todos"))
+// CreateCourse is the resolver for the createCourse field.
+func (r *mutationResolver) CreateCourse(ctx context.Context, input model1.NewCourse) (*model1.Course, error) {
+	panic(fmt.Errorf("not implemented: CreateCourse - createCourse"))
+}
+
+// Categories is the resolver for the categories field.
+func (r *queryResolver) Categories(ctx context.Context) ([]*model1.Category, error) {
+	panic(fmt.Errorf("not implemented: Categories - categories"))
+}
+
+// Courses is the resolver for the courses field.
+func (r *queryResolver) Courses(ctx context.Context) ([]*model1.Course, error) {
+	panic(fmt.Errorf("not implemented: Courses - courses"))
 }
 
 // Mutation returns MutationResolver implementation.

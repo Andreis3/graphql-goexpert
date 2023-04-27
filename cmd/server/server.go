@@ -1,10 +1,11 @@
 package main
 
 import (
-	"graphql-goexpert/graph"
 	"log"
 	"net/http"
 	"os"
+
+	"github.com/andreis3/graphql-goexpert/graph"
 
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/99designs/gqlgen/graphql/playground"
