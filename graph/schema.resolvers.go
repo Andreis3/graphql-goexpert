@@ -8,16 +8,16 @@ import (
 	"context"
 	"fmt"
 
-	model1 "github.com/andreis3/graphql-goexpert/graph/model"
+	"github.com/andreis3/graphql-goexpert/graph/model"
 )
 
 // CreateCategory is the resolver for the createCategory field.
-func (r *mutationResolver) CreateCategory(ctx context.Context, input model1.NewCategoryInput) (*model1.Category, error) {
+func (r *mutationResolver) CreateCategory(ctx context.Context, input model.NewCategoryInput) (*model.Category, error) {
 	category, err := r.CategoryService.Create(input.Name, *input.Description)
 	if err != nil {
 		return nil, err
 	}
-	return &model1.Category{
+	return &model.Category{
 		ID:          category.ID,
 		Name:        category.Name,
 		Description: &category.Description,
@@ -25,17 +25,39 @@ func (r *mutationResolver) CreateCategory(ctx context.Context, input model1.NewC
 }
 
 // CreateCourse is the resolver for the createCourse field.
-func (r *mutationResolver) CreateCourse(ctx context.Context, input model1.NewCourse) (*model1.Course, error) {
-	panic(fmt.Errorf("not implemented: CreateCourse - createCourse"))
+func (r *mutationResolver) CreateCourse(ctx context.Context, input model.NewCourse) (*model.Course, error) {
+	course, err := r.CourseService.Create(input.Name, *input.Description, input.CategoryID)
+	if err != nil {
+		return nil, err
+	}
+
+	return &model.Course{
+		ID:          course.ID,
+		Name:        course.Name,
+		Description: &course.Description,
+	}, nil
 }
 
 // Categories is the resolver for the categories field.
-func (r *queryResolver) Categories(ctx context.Context) ([]*model1.Category, error) {
-	panic(fmt.Errorf("not implemented: Categories - categories"))
+func (r *queryResolver) Categories(ctx context.Context) ([]*model.Category, error) {
+	categories, err := r.CategoryService.FindAll()
+	if err != nil {
+		return nil, err
+	}
+
+	var result []*model.Category
+	for _, category := range categories {
+		result = append(result, &model.Category{
+			ID:          category.ID,
+			Name:        category.Name,
+			Description: &category.Description,
+		})
+	}
+	return result, nil
 }
 
 // Courses is the resolver for the courses field.
-func (r *queryResolver) Courses(ctx context.Context) ([]*model1.Course, error) {
+func (r *queryResolver) Courses(ctx context.Context) ([]*model.Course, error) {
 	panic(fmt.Errorf("not implemented: Courses - courses"))
 }
 

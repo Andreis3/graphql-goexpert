@@ -8,4 +8,5 @@ import "github.com/andreis3/graphql-goexpert/internal/database"
 
 type Resolver struct {
 	CategoryService *database.Category
+	CourseService   *database.Course
 }

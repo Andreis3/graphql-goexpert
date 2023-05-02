@@ -4,6 +4,7 @@ import (
 	"database/sql"
 
 	"github.com/google/uuid"
+	_ "github.com/mattn/go-sqlite3"
 )
 
 type Category struct {
@@ -25,4 +26,25 @@ func (c *Category) Create(name string, description string) (Category, error) {
 		return Category{}, err
 	}
 	return Category{ID: id, Name: name, Description: description}, nil
+}
+
+func (c *Category) FindAll() ([]Category, error) {
+	rows, err := c.db.Query("SELECT id, name, description FROM categories")
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var categories []Category
+	for rows.Next() {
+		var id string
+		var name string
+		var description string
+		err := rows.Scan(&id, &name, &description)
+		if err != nil {
+			return nil, err
+		}
+		categories = append(categories, Category{ID: id, Name: name, Description: description})
+	}
+	return categories, nil
 }
